@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predict Category</title>
+</head>
+<body>
+    <h2>Enter Description to Predict Category</h2>
+    <form id="predictForm">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea>
+        <br>
+        <button type="button" onclick="makePrediction()">Predict</button>
+    </form>
+    <h3 id="result"></h3>
+
+    <script>
+        function makePrediction() {
+            var description = document.getElementById('description').value;
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({description: description})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Category: ' + data.category;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
